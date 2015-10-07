@@ -36,7 +36,7 @@ public class GerenciadorDeClientes {
 
     }
 
-    public void mandarParaTodos(Requisicao r) {
+    public void mandarParaTodos(Resposta r) {
         for (Cliente c : clientes) {
             try {
                 if (c.getTratador().verificaOla()) {

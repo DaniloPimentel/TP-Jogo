@@ -45,10 +45,10 @@ public class TrataCliente extends Thread {
 
         if (this.cliente.getGdc().isApelidoDisponivel(apelido)) {
             this.cliente.setApelido(apelido);
-            enviar(new Requisicao(decode(1, String.valueOf(this.cliente.getId()))));
+            enviar(new Resposta(1, ""));
             System.out.println("Cliente " + this.cliente.getId() + ": Deu olá com o apelido " + apelido);
         } else {
-            enviar(new Requisicao(decode(5001, "")));
+            enviar(new Resposta(5001, ""));
         }
 
     }
@@ -58,26 +58,22 @@ public class TrataCliente extends Thread {
         if (this.cliente.getGdc().isApelidoDisponivel(apelido) && verificaOla()) {
             this.cliente.setApelido(apelido);
             System.out.println("Cliente " + this.cliente.getId() + ": Mudou o apelido para " + apelido);
-            this.cliente.getGdc().mandarParaTodos(new Requisicao(decode(2, this.cliente.getId() + "###" + apelido)));
+            this.cliente.getGdc().mandarParaTodos(new Resposta(2, this.cliente.getId() + "###" + apelido));
         } else {
-            enviar(new Requisicao(decode(5002, "")));
+            enviar(new Resposta(5002, ""));
         }
 
     }
 
-    public void enviar(Requisicao requisicao) throws IOException {
+    public void enviar(Resposta resposta) throws IOException {
 
         PrintStream ps = new PrintStream(this.cliente.getSocket().getOutputStream());
-        ps.println(requisicao.encode());
+        ps.println(resposta.encode());
 
     }
     
     public boolean verificaOla(){
         return !(this.cliente.getApelido() == null);
-    }
-
-    private String decode(int i, String corpo) {
-        return i + "&&&" + corpo;
     }
 
     public Cliente getCliente() {

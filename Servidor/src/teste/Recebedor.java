@@ -32,6 +32,7 @@ public class Recebedor extends Thread {
             } catch (IOException ex) {
                 System.out.println("IOException");
             }
+            System.out.println("Servidor desconectado");
         }
     }
 }
