@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class GerenciadorDeClientes {
 
@@ -34,6 +32,29 @@ public class GerenciadorDeClientes {
 
         return false;
 
+    }
+
+    public List<Integer> getAllIds() {
+
+        List<Integer> ids = new ArrayList<>();
+
+        for (Cliente c : clientes) {
+            if (c.getTratador().verificaOla()) {
+                ids.add(c.getId());
+            }
+        }
+
+        return ids;
+
+    }
+    
+    public Cliente getClienteById(int id){
+        for(Cliente c : clientes){
+            if(c.getId() == id){
+                return c;
+            }
+        }
+        return null;
     }
 
     public void mandarParaTodos(Resposta r) {
