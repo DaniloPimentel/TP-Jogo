@@ -1,5 +1,7 @@
 package servidor.sala;
 
+import servidor.protocolos.RequisicaoSala;
+
 public class TDM extends Sala{ // Team Death Match
 
     public TDM(int maxJogadores) {
@@ -7,7 +9,7 @@ public class TDM extends Sala{ // Team Death Match
     }
 
     @Override
-    public boolean servico(String corpo) {
+    public boolean servico(RequisicaoSala rs) {
         return true;
     }
     
