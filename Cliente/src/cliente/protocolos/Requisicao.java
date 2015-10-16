@@ -1,4 +1,4 @@
-package cliente;
+package cliente.protocolos;
 
 public class Requisicao {
 

@@ -6,7 +6,7 @@
 package form;
 
 import cliente.Cliente;
-import cliente.Requisicao;
+import cliente.protocolos.Requisicao;
 import java.awt.CardLayout;
 import java.io.IOException;
 import java.net.Socket;

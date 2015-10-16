@@ -1,5 +1,6 @@
 package cliente;
 
+import cliente.protocolos.Requisicao;
 import form.Janela;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -22,11 +23,19 @@ public class Cliente {
     public static final String ERRO_CONEXAO = "Erro ao se conectar ao servidor";
     public static final String ERRO_SERVICO_OLA = "Erro ao enviar o apelido ao servidor. Tente novamente.";
     
-    public Socket socket;
-    Janela janela;
+    private Socket socket;
+    private Janela janela;
+    private Recebedor recebedor;
+    
+    private int id;
+    private String apelido;
+    private int avatar_camisa;
+    private int avatar_calca;
     
     Cliente(){
         janela = new Janela(this);
+        recebedor = new Recebedor(this);
+        recebedor.start();
     }
     
     public void enviar(Requisicao requisicao) throws IOException {
@@ -34,6 +43,10 @@ public class Cliente {
         PrintStream ps = new PrintStream(this.socket.getOutputStream());
         ps.println(requisicao.encode());
 
+    }
+
+    public Socket getSocket() {
+        return socket;
     }
 
 }
