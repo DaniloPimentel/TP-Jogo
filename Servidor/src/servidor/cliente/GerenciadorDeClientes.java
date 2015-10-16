@@ -1,9 +1,11 @@
-package servidor;
+package servidor.cliente;
 
+import servidor.protocolos.Resposta;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import servidor.Servidor;
 
 public class GerenciadorDeClientes {
 
@@ -16,7 +18,7 @@ public class GerenciadorDeClientes {
     }
 
     public void adicionaCliente(Socket socket) {
-        Cliente novo = new Cliente(socket, this);
+        Cliente novo = new Cliente(socket, servidor);
         this.clientes.add(novo);
         System.out.println("Nova conexão com o cliente " + novo.getId());
     }
@@ -34,17 +36,9 @@ public class GerenciadorDeClientes {
 
     }
 
-    public List<Integer> getAllIds() {
+    public List<Cliente> getAll() {
 
-        List<Integer> ids = new ArrayList<>();
-
-        for (Cliente c : clientes) {
-            if (c.getTratador().verificaOla()) {
-                ids.add(c.getId());
-            }
-        }
-
-        return ids;
+        return clientes;
 
     }
     
@@ -57,7 +51,7 @@ public class GerenciadorDeClientes {
         return null;
     }
 
-    public void mandarParaTodos(Resposta r) {
+    public void enviarParaTodos(Resposta r) {
         for (Cliente c : clientes) {
             try {
                 if (c.getTratador().verificaOla()) {

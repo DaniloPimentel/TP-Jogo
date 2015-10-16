@@ -1,4 +1,4 @@
-package servidor;
+package servidor.protocolos;
 
 public class Requisicao {
 
