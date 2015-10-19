@@ -1,7 +1,7 @@
-package form;
+package cliente.janelas;
 
-import main.Main;
-import main.protocolos.Requisicao;
+import cliente.Cliente;
+import cliente.protocolos.Requisicao;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.io.IOException;
@@ -9,9 +9,9 @@ import java.net.Socket;
 
 public class ConfigInicial extends javax.swing.JFrame {
     
-    Main cliente;
+    Cliente cliente;
 
-    public ConfigInicial(Main cliente) {
+    public ConfigInicial(Cliente cliente) {
         this.cliente = cliente;
         initComponents();
         ( (CardLayout) this.PainelPrincipal.getLayout()).show(PainelPrincipal, "conexao");
@@ -193,7 +193,7 @@ public class ConfigInicial extends javax.swing.JFrame {
         
         try{
             
-            this.cliente.enviar(new Requisicao(Main.SERVICO_OLA, apelido));
+            this.cliente.enviar(new Requisicao(Cliente.SERVICO_OLA, apelido));
             
             while(cliente.getId() == null) {
                 this.MsgEscolherApelido.setForeground(Color.black);

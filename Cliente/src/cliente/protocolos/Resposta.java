@@ -1,4 +1,4 @@
-package main.protocolos;
+package cliente.protocolos;
 
 public class Resposta {
 

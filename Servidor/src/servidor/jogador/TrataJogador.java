@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Scanner;
 import servidor.Servidor;
 import servidor.protocolos.RequisicaoSala;
+import servidor.sala.FFA;
+import servidor.sala.Sala;
+import servidor.sala.TDM;
 
 public class TrataJogador extends Thread {
 
@@ -23,6 +26,7 @@ public class TrataJogador extends Thread {
     public static final int SERVICO_ENTRAR_SALA = 6;
     public static final int SERVICO_SAIR_SALA = 7;
     public static final int SERVICO_SALA = 8;
+    public static final int SERVICO_SOLICITAR_SALAS = 9;
     public static final int SERVICO_NEGADO = 5000;
 
     private final Jogador jogador;
@@ -88,6 +92,10 @@ public class TrataJogador extends Thread {
                                     System.out.println("(SERVICO_SALA)");
                                     servicoSALA(requisicao.getCorpo());
                                     break;
+                                case SERVICO_SOLICITAR_SALAS:
+                                    System.out.println("(SERVICO_SOLICITAR_SALAS)");
+                                    servicoSOLICITAR_SALAS();
+                                    break;
                             }
                             break;
                     }
@@ -120,7 +128,7 @@ public class TrataJogador extends Thread {
 
         if (this.servidor.getGdj().isApelidoDisponivel(apelido)) {
             this.jogador.setApelido(apelido);
-            this.servidor.getGdj().enviarParaTodos(new Resposta(SERVICO_OLA, "" + this.jogador.getId()));
+            this.enviar(new Resposta(SERVICO_OLA, "" + this.jogador.getId()));
             System.out.println("Jogador " + this.jogador.getId() + ": Deu olá com o apelido " + apelido);
         } else {
             enviar(new Resposta(SERVICO_NEGADO, "" + SERVICO_OLA));
@@ -143,16 +151,20 @@ public class TrataJogador extends Thread {
     private void servicoSOLICITAR_JOGADORES() throws IOException {
 
         List<Jogador> jogadores = this.servidor.getGdj().getAll();
+        
+        System.out.println("Lista de jogadores: " + jogadores);
 
         String corpo = "";
         
-        for(Jogador c : jogadores){
+        for(Jogador j : jogadores){
             
             if (!corpo.equals("")) {
                 corpo += "###";
             }
             
-            corpo += c.getId() + "@@@" + c.getApelido() + "@@@" + c.getAvatarCamisa() + "@@@" + c.getAvatarCalca();
+            corpo += j.getId() + "@@@" + j.getApelido() + "@@@" + j.getAvatarCamisa() + "@@@" + j.getAvatarCalca();
+            
+            System.out.println("Corpo: " + corpo);
             
         }
 
@@ -263,6 +275,34 @@ public class TrataJogador extends Thread {
         } catch (RequisicaoMalFormadaException ex) {
             enviar(new Resposta(SERVICO_NEGADO, "" + SERVICO_SALA));
         }
+        
+    }
+    
+    public void servicoSOLICITAR_SALAS() throws IOException{
+        
+        List<Sala> salas = this.servidor.getGds().getAll();
+        
+        String corpo = "";
+        
+        for(Sala s : salas) {
+            
+            if (!corpo.equals("")) {
+                corpo += "###";
+            }
+            
+            String tipo = "";
+            
+            if(s instanceof FFA) {
+                tipo = "FFA";
+            } else if (s instanceof TDM){
+                tipo = "TDM";
+            }
+            
+            corpo += s.getId() + "@@@" + s.getMapa().getNome() + "@@@" + tipo + "@@@" + s.getJogadores().size() + "@@@" + s.getMaxJogadores();
+            
+        }
+        
+        enviar(new Resposta(SERVICO_SOLICITAR_SALAS, corpo));
         
     }
 

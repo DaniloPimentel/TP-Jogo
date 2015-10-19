@@ -12,11 +12,13 @@ abstract public class Sala {
     private int id;
     private int maxJogadores;
     private List<Jogador> jogadores;
+    private Mapa mapa;
 
     public Sala(int maxJogadores) {
         id = ID_SALAS++;
         jogadores = new ArrayList<>();
         this.maxJogadores = maxJogadores;
+        mapa = new Mapa();
     }
 
     public boolean adicionar(Jogador novo) {
@@ -49,7 +51,7 @@ abstract public class Sala {
         }
         return false;
     }
-    
+
     abstract public boolean servico(RequisicaoSala rs);
 
     public int getId() {
@@ -58,6 +60,14 @@ abstract public class Sala {
 
     public int getMaxJogadores() {
         return maxJogadores;
+    }
+
+    public List<Jogador> getJogadores() {
+        return jogadores;
+    }
+
+    public Mapa getMapa() {
+        return mapa;
     }
 
 }

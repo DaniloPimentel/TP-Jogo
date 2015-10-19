@@ -1,28 +1,32 @@
-package main;
+package cliente;
 
-import main.protocolos.Requisicao;
-import form.ConfigInicial;
-import form.JanelaPrincipal;
+import cliente.jogador.GerenciadorDeJogadores;
+import cliente.protocolos.Requisicao;
+import cliente.janelas.ConfigInicial;
+import cliente.janelas.JanelaPrincipal;
+import cliente.sala.GerenciadorDeSalas;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
 
-public class Main {
+public class Cliente {
 
     public static void main(String[] args) {
-        new Main();
+        new Cliente();
     }
 
     public static final int SERVICO_TCHAU = 0;
     public static final int SERVICO_OLA = 1;
     public static final int SERVICO_MUDAR_APELIDO = 2;
-    public static final int SERVICO_SOLICITAR_CLIENTES = 3;
+    public static final int SERVICO_SOLICITAR_JOGADORES = 3;
     public static final int SERVICO_MENSAGEM = 4;
     public static final int SERVICO_AVATAR = 5;
     public static final int SERVICO_ENTRAR_SALA = 6;
     public static final int SERVICO_SAIR_SALA = 7;
     public static final int SERVICO_SALA = 8;
+    public static final int SERVICO_SOLICITAR_SALAS = 9;
     public static final int SERVICO_NEGADO = 5000;
+    ;
 
     public static final String ERRO_CONEXAO = "Erro ao se conectar ao servidor";
     public static final String ERRO_SERVICO_OLA = "Erro ao enviar o apelido ao servidor. Tente novamente.";
@@ -31,14 +35,18 @@ public class Main {
     private final ConfigInicial configInicial;
     private JanelaPrincipal janela;
     private final Recebedor recebedor;
+    private final GerenciadorDeJogadores gdj;
+    private final GerenciadorDeSalas gds;
 
     private Integer id;
     private String apelido;
     private int avatar_camisa;
     private int avatar_calca;
 
-    Main() {
+    Cliente() {
         configInicial = new ConfigInicial(this);
+        gdj = new GerenciadorDeJogadores(this);
+        gds = new GerenciadorDeSalas(this);
         recebedor = new Recebedor(this);
     }
 
@@ -99,6 +107,14 @@ public class Main {
 
     public void setJanela(JanelaPrincipal janela) {
         this.janela = janela;
+    }
+
+    public GerenciadorDeJogadores getGdj() {
+        return gdj;
+    }
+
+    public GerenciadorDeSalas getGds() {
+        return gds;
     }
 
 }

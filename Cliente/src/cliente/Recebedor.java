@@ -1,15 +1,15 @@
-package main;
+package cliente;
 
-import main.protocolos.Resposta;
-import main.protocolos.RespostaMalFormadaException;
+import cliente.protocolos.Resposta;
+import cliente.protocolos.RespostaMalFormadaException;
 import java.io.IOException;
 import java.util.Scanner;
 
 public class Recebedor extends Thread{
     
-    private final Main cliente;
+    private final Cliente cliente;
     
-    public Recebedor(Main cliente) {
+    public Recebedor(Cliente cliente) {
         
         this.cliente = cliente;
         
@@ -17,6 +17,9 @@ public class Recebedor extends Thread{
     
     @Override
     public void run(){
+        
+        this.cliente.getGdj().start();
+        this.cliente.getGds().start();
         
         try {
             
@@ -31,16 +34,28 @@ public class Recebedor extends Thread{
                     System.out.print("Recebedor: Nova resposta ");
                     
                     switch(nova.getServico()) {
-                        case Main.SERVICO_OLA:
+                        case Cliente.SERVICO_OLA:
                             System.out.println("(SERVICO_OLA)");
                             servicoOLA(nova.getCorpo());
                             break;
-                        case Main.SERVICO_NEGADO:
+                        case Cliente.SERVICO_SOLICITAR_JOGADORES:
+                            System.out.println("(SERVICO_SOLICITAR_JOGADORES)");
+                            this.cliente.getGdj().atualizarListaJogadores(nova.getCorpo());
+                            break;
+                        case Cliente.SERVICO_SOLICITAR_SALAS:
+                            System.out.println("(SERVICO_SOLICITAR_SALAS)");
+                            this.cliente.getGds().atualizarListaSalas(nova.getCorpo());
+                        case Cliente.SERVICO_NEGADO:
                             System.out.print("(SERVICO_NEGADO - ");
                             switch(Integer.parseInt(nova.getCorpo())) {
-                                case Main.SERVICO_OLA:
+                                case Cliente.SERVICO_OLA:
                                     System.out.println("SERVICO_OLA)");
                                     this.cliente.setId(-1);
+                                case Cliente.SERVICO_SOLICITAR_JOGADORES:
+                                    System.out.println("SERVICO_SOLICITAR_JOGADORES)");
+                                    break;
+                                case Cliente.SERVICO_SOLICITAR_SALAS:
+                                    System.out.println("SERVICO_SOLICITAR_SALAS)");
                                     break;
                             }
                     }

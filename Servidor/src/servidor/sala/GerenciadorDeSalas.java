@@ -67,4 +67,8 @@ public class GerenciadorDeSalas {
         
     }
 
+    public List<Sala> getAll() {
+        return salas;
+    }
+
 }
