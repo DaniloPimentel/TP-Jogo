@@ -5,7 +5,7 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class TestaCliente {
+public class TestaJogador {
 
     public static void main(String[] args) throws IOException {
         Socket cliente = new Socket("", 12345);

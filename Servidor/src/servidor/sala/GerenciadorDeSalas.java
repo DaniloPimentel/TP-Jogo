@@ -1,13 +1,10 @@
 package servidor.sala;
 
-import servidor.sala.Sala;
 import java.util.ArrayList;
 import java.util.List;
-import servidor.cliente.Cliente;
+import servidor.jogador.Jogador;
 import servidor.Servidor;
 import servidor.protocolos.RequisicaoSala;
-import servidor.sala.FFA;
-import servidor.sala.TDM;
 
 public class GerenciadorDeSalas {
 
@@ -30,27 +27,27 @@ public class GerenciadorDeSalas {
 
     }
 
-    public boolean adicionarClienteEmSala(int id, Cliente cliente) {
+    public boolean adicionarJogadorEmSala(int id, Jogador jogador) {
 
         for (Sala s : salas) {
 
-            if (s.hasCliente(cliente)) {
-                return false; // O cliente não pode ficar em mais de uma sala
+            if (s.hasJogador(jogador)) {
+                return false; // O jogador não pode ficar em mais de uma sala
             }
 
             if (s.getId() == id) {
-                return s.adicionar(cliente);
+                return s.adicionar(jogador);
             }
         }
 
         return false;
     }
 
-    public boolean removerClienteDaSala(int id, Cliente cliente) {
+    public boolean removerJogadorDaSala(int id, Jogador jogador) {
         
         for (Sala s : salas) {
             if (s.getId() == id) {
-                return s.remover(cliente);
+                return s.remover(jogador);
             }
         }
 

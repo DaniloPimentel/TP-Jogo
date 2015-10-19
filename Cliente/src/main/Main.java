@@ -1,15 +1,16 @@
-package cliente;
+package main;
 
-import cliente.protocolos.Requisicao;
-import form.Janela;
+import main.protocolos.Requisicao;
+import form.ConfigInicial;
+import form.JanelaPrincipal;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
 
-public class Cliente {
+public class Main {
 
     public static void main(String[] args) {
-        new Cliente();
+        new Main();
     }
 
     public static final int SERVICO_TCHAU = 0;
@@ -27,16 +28,17 @@ public class Cliente {
     public static final String ERRO_SERVICO_OLA = "Erro ao enviar o apelido ao servidor. Tente novamente.";
 
     private Socket socket;
-    private final Janela janela;
+    private final ConfigInicial configInicial;
+    private JanelaPrincipal janela;
     private final Recebedor recebedor;
 
-    private int id;
+    private Integer id;
     private String apelido;
     private int avatar_camisa;
     private int avatar_calca;
 
-    Cliente() {
-        janela = new Janela(this);
+    Main() {
+        configInicial = new ConfigInicial(this);
         recebedor = new Recebedor(this);
     }
 
@@ -51,19 +53,15 @@ public class Cliente {
         return socket;
     }
 
-    public Janela getJanela() {
-        return janela;
-    }
-
     public Recebedor getRecebedor() {
         return recebedor;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -93,6 +91,14 @@ public class Cliente {
 
     public void setSocket(Socket socket) {
         this.socket = socket;
+    }
+
+    public JanelaPrincipal getJanela() {
+        return janela;
+    }
+
+    public void setJanela(JanelaPrincipal janela) {
+        this.janela = janela;
     }
 
 }

@@ -1,12 +1,11 @@
-package servidor.cliente;
+package servidor.jogador;
 
-import servidor.cliente.TrataCliente;
 import java.net.Socket;
 import servidor.Servidor;
 
-public class Cliente {
+public class Jogador {
 
-    public static int ID_CLIENTES = 1;
+    public static int ID_JOGADORES = 1;
 
     private final int id;
     private String apelido;
@@ -14,15 +13,15 @@ public class Cliente {
     private int avatarCamisa;
     private int avatarCalca;
 
-    private final TrataCliente tratador;
+    private final TrataJogador tratador;
 
     private final Servidor servidor;
 
-    public Cliente(Socket socket, Servidor servidor) {
-        this.id = ID_CLIENTES++;
+    public Jogador(Socket socket, Servidor servidor) {
+        this.id = ID_JOGADORES++;
         this.socket = socket;
         this.servidor = servidor;
-        this.tratador = new TrataCliente(this, servidor);
+        this.tratador = new TrataJogador(this, servidor);
         this.tratador.start();
         this.avatarCalca=1;
         this.avatarCamisa=1;
@@ -30,9 +29,9 @@ public class Cliente {
 
     public void disconectar() {
 
-        this.servidor.getGdc().removeCliente(this.id);
+        this.servidor.getGdj().removeJogador(this.id);
 
-        System.out.println("Cliente " + this.id + " disconectado.");
+        System.out.println("Jogador " + this.id + " disconectado.");
 
     }
 
@@ -52,7 +51,7 @@ public class Cliente {
         this.apelido = apelido;
     }
 
-    public TrataCliente getTratador() {
+    public TrataJogador getTratador() {
         return tratador;
     }
 

@@ -1,4 +1,4 @@
-package cliente.protocolos;
+package main.protocolos;
 
 public class RespostaMalFormadaException extends Exception {
 

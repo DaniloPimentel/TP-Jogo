@@ -1,6 +1,6 @@
 package servidor;
 
-import servidor.cliente.GerenciadorDeClientes;
+import servidor.jogador.GerenciadorDeJogadores;
 import servidor.sala.GerenciadorDeSalas;
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -16,13 +16,13 @@ public class Servidor {
 
     private final int porta;
     private final ServerSocket servidor;
-    private final GerenciadorDeClientes gdc;
+    private final GerenciadorDeJogadores gdj;
     private final GerenciadorDeSalas gds;
 
     public Servidor(int porta) throws IOException {
         this.porta = porta;
         this.servidor = new ServerSocket(this.porta);
-        this.gdc = new GerenciadorDeClientes(this);
+        this.gdj = new GerenciadorDeJogadores(this);
         this.gds = new GerenciadorDeSalas(this);
     }
 
@@ -30,9 +30,9 @@ public class Servidor {
 
         while (true) {
 
-            Socket cliente = servidor.accept();
-            
-            gdc.adicionaCliente(cliente);
+            Socket jogador = servidor.accept();
+
+            gdj.adicionaJogador(jogador);
 
         }
 
@@ -42,8 +42,8 @@ public class Servidor {
         return servidor;
     }
 
-    public GerenciadorDeClientes getGdc() {
-        return gdc;
+    public GerenciadorDeJogadores getGdj() {
+        return gdj;
     }
 
     public GerenciadorDeSalas getGds() {

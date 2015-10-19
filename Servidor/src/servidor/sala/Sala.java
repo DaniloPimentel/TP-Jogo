@@ -2,7 +2,7 @@ package servidor.sala;
 
 import java.util.ArrayList;
 import java.util.List;
-import servidor.cliente.Cliente;
+import servidor.jogador.Jogador;
 import servidor.protocolos.RequisicaoSala;
 
 abstract public class Sala {
@@ -11,7 +11,7 @@ abstract public class Sala {
 
     private int id;
     private int maxJogadores;
-    private List<Cliente> jogadores;
+    private List<Jogador> jogadores;
 
     public Sala(int maxJogadores) {
         id = ID_SALAS++;
@@ -19,9 +19,9 @@ abstract public class Sala {
         this.maxJogadores = maxJogadores;
     }
 
-    public boolean adicionar(Cliente novo) {
+    public boolean adicionar(Jogador novo) {
 
-        if (!hasCliente(novo)) {
+        if (!hasJogador(novo)) {
             this.jogadores.add(novo);
             return true;
         }
@@ -30,9 +30,9 @@ abstract public class Sala {
 
     }
 
-    public boolean remover(Cliente cliente) {
+    public boolean remover(Jogador cliente) {
 
-        if (hasCliente(cliente)) {
+        if (hasJogador(cliente)) {
             this.jogadores.remove(cliente);
             return true;
         }
@@ -41,8 +41,8 @@ abstract public class Sala {
 
     }
 
-    public boolean hasCliente(Cliente cliente) {
-        for (Cliente jogador : jogadores) {
+    public boolean hasJogador(Jogador cliente) {
+        for (Jogador jogador : jogadores) {
             if (jogador.getId() == cliente.getId()) {
                 return true;
             }
