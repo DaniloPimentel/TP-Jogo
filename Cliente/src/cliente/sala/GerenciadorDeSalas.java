@@ -35,15 +35,16 @@ public class GerenciadorDeSalas extends Thread {
 
     private void requisitarSalas() throws IOException {
 
-        this.cliente.enviar(new Requisicao(Cliente.SERVICO_SOLICITAR_SALAS, ""));
+        cliente.enviar(new Requisicao(Cliente.SERVICO_SOLICITAR_SALAS, ""));
 
     }
 
     public void atualizarListaSalas(String corpo) {
 
+        System.out.println("GDS: atualizando lista de salas");
+
         List<Sala> nova = criaLista(corpo);
 
-        System.out.println("GDS: atualizando Lista de Salas");
         System.out.println("Lista antiga: " + this.salas);
         System.out.println("Lista recebida: " + nova);
 
@@ -73,21 +74,21 @@ public class GerenciadorDeSalas extends Thread {
 
         List<Sala> nova = new ArrayList<>();
 
-        String[] sas = corpo.split("###");
+        String[] salas_corpo = corpo.split("###");
 
-        for (String sa : sas) {
+        for (String sala_corpo : salas_corpo) {
 
-            if (sa.contains("@@@")) {
+            if (sala_corpo.contains("@@@")) {
 
-                String[] partes = sa.split("@@@");
+                String[] partes = sala_corpo.split("@@@");
 
                 try {
 
                     int id = Integer.parseInt(partes[0]);
                     String mapa = partes[1];
                     String tipo = partes[2];
-                    int jogadores = Integer.parseInt(partes[2]);
-                    int maxJogadores = Integer.parseInt(partes[3]);
+                    int jogadores = Integer.parseInt(partes[3]);
+                    int maxJogadores = Integer.parseInt(partes[4]);
 
                     Sala sala = new Sala(id, mapa, tipo, jogadores, maxJogadores);
 

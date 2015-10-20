@@ -26,7 +26,6 @@ public class Cliente {
     public static final int SERVICO_SALA = 8;
     public static final int SERVICO_SOLICITAR_SALAS = 9;
     public static final int SERVICO_NEGADO = 5000;
-    ;
 
     public static final String ERRO_CONEXAO = "Erro ao se conectar ao servidor";
     public static final String ERRO_SERVICO_OLA = "Erro ao enviar o apelido ao servidor. Tente novamente.";
@@ -48,9 +47,10 @@ public class Cliente {
         gdj = new GerenciadorDeJogadores(this);
         gds = new GerenciadorDeSalas(this);
         recebedor = new Recebedor(this);
+        janela = new JanelaPrincipal(this);
     }
 
-    public void enviar(Requisicao requisicao) throws IOException {
+    synchronized public void enviar(Requisicao requisicao) throws IOException {
 
         PrintStream ps = new PrintStream(this.socket.getOutputStream());
         ps.println(requisicao.encode());

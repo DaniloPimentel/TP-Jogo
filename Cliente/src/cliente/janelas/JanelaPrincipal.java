@@ -12,7 +12,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
     
     public JanelaPrincipal(Cliente cliente) {
         initComponents();
-        setVisible(true);
+        setVisible(false);
         this.cliente = cliente;
     }
     

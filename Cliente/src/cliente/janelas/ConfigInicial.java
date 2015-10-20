@@ -204,7 +204,7 @@ public class ConfigInicial extends javax.swing.JFrame {
                 this.MsgEscolherApelido.setForeground(Color.red);
                 this.MsgEscolherApelido.setText("Apelido inválido. Escolha outro.");
             } else {
-                this.cliente.setJanela(new JanelaPrincipal(this.cliente));
+                this.cliente.getJanela().setVisible(true);
                 this.dispose();
             }
             

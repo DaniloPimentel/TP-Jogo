@@ -31,7 +31,7 @@ public class Recebedor extends Thread{
                     
                     Resposta nova = new Resposta(s.nextLine());
                     
-                    System.out.print("Recebedor: Nova resposta ");
+                    System.out.print("Recebedor: Nova resposta -> " + nova.encode());
                     
                     switch(nova.getServico()) {
                         case Cliente.SERVICO_OLA:
@@ -45,6 +45,7 @@ public class Recebedor extends Thread{
                         case Cliente.SERVICO_SOLICITAR_SALAS:
                             System.out.println("(SERVICO_SOLICITAR_SALAS)");
                             this.cliente.getGds().atualizarListaSalas(nova.getCorpo());
+                            break;
                         case Cliente.SERVICO_NEGADO:
                             System.out.print("(SERVICO_NEGADO - ");
                             switch(Integer.parseInt(nova.getCorpo())) {
