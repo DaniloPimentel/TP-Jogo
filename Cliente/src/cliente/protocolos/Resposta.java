@@ -32,7 +32,8 @@ public class Resposta {
         }
 
     }
-    
+
+   
     public String encode() {
         return this.servico + "&&&" + this.corpo;
     }

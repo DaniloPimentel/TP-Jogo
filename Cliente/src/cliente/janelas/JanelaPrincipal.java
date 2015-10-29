@@ -2,46 +2,102 @@ package cliente.janelas;
 
 import cliente.Cliente;
 import cliente.jogador.Jogador;
+import cliente.protocolos.Mensagem;
+import cliente.protocolos.Requisicao;
 import cliente.sala.Sala;
+import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 public class JanelaPrincipal extends javax.swing.JFrame {
-    
+
     private final Cliente cliente;
-    
+
     public JanelaPrincipal(Cliente cliente) {
         initComponents();
         setVisible(false);
         this.cliente = cliente;
     }
-    
+
     public void atualizaTabelaJogadores(List<Jogador> jogadores) {
-        
+
         DefaultTableModel model = (DefaultTableModel) this.TabelaJogadores.getModel();
-        
-        for(int i=model.getRowCount()-1; i >= 0; i--) {
+
+        for (int i = model.getRowCount() - 1; i >= 0; i--) {
             model.removeRow(i);
         }
-        
-        for(Jogador j : jogadores) {
+
+        for (Jogador j : jogadores) {
             Object[] linha = {j.getId(), j.getApelido(), j.getAvatarCamisa(), j.getAvatarCalca()};
             model.addRow(linha);
         }
+
+    }
+
+    public void atualizaTabelaSalas(List<Sala> salas) {
+
+        DefaultTableModel model = (DefaultTableModel) this.TabelaSalas.getModel();
+
+        for (int i = model.getRowCount() - 1; i >= 0; i--) {
+            model.removeRow(i);
+        }
+
+        for (Sala s : salas) {
+            Object[] linha = {s.getId(), s.getMapa(), s.getTipo(), s.getJogadores(), s.getMaxJogadores()};
+            model.addRow(linha);
+        }
+
+    }
+
+    public void novaMensagemGlobal(String apelido, String mensagem, boolean global) {
+
+        if (global) {
+
+            this.ChatGlobal.setText(this.ChatGlobal.getText() + apelido + ": " + mensagem + "\n");
+
+        } else {
+
+            this.ChatGlobal.setText(this.ChatGlobal.getText() + "[PRIVADO] " + apelido + ": " + mensagem + "\n");
+
+        }
+
+    }
+    
+    public void montarComandoMensagemPrivada(int id) {
+        
+        this.ChatGlobal.setText("/p " + id + " ");
         
     }
     
-    public void atualizaTabelaSalas(List<Sala> salas) {
+    public void mandarMensagem() {
         
-        DefaultTableModel model = (DefaultTableModel) this.TabelaSalas.getModel();
+        String txt = this.InputChatGlobal.getText();
         
-        for(int i=model.getRowCount()-1; i >= 0; i--) {
-            model.removeRow(i);
+        if(txt.substring(0, 1).equals("/p")) { 
+            
+            try {
+                
+                
+                
+            } catch (NumberFormatException ex) {
+                
+            }
+            
         }
-        
-        for(Sala s : salas) {
-            Object[] linha = {s.getId(), s.getMapa(), s.getTipo(), s.getJogadores(), s.getMaxJogadores()};
-            model.addRow(linha);
+
+        Mensagem mensagem = new Mensagem(0, 0, txt);
+
+        Requisicao requisicao = new Requisicao(Cliente.SERVICO_MENSAGEM, mensagem.encode());
+
+        try {
+
+            this.cliente.enviar(requisicao);
+
+            this.InputChatGlobal.setText("");
+
+        } catch (IOException ex) {
+            System.out.println("IOException: Falha ao enviar mensagem");
         }
         
     }
@@ -94,7 +150,18 @@ public class JanelaPrincipal extends javax.swing.JFrame {
         ChatGlobal.setRows(5);
         jScrollPane2.setViewportView(ChatGlobal);
 
+        InputChatGlobal.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                InputChatGlobalKeyPressed(evt);
+            }
+        });
+
         BtEnviarChatGlobal.setText("Enviar");
+        BtEnviarChatGlobal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtEnviarChatGlobalActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -259,6 +326,52 @@ public class JanelaPrincipal extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void BtEnviarChatGlobalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtEnviarChatGlobalActionPerformed
+
+        String txt = this.InputChatGlobal.getText();
+
+        Mensagem mensagem = new Mensagem(0, 0, txt);
+
+        Requisicao requisicao = new Requisicao(Cliente.SERVICO_MENSAGEM, mensagem.encode());
+
+        try {
+
+            this.cliente.enviar(requisicao);
+
+            this.InputChatGlobal.setText("");
+
+        } catch (IOException ex) {
+            System.out.println("IOException: Falha ao enviar mensagem");
+        }
+
+    }//GEN-LAST:event_BtEnviarChatGlobalActionPerformed
+
+    private void InputChatGlobalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_InputChatGlobalKeyPressed
+        // TODO add your handling code here:
+
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+
+            String txt = this.InputChatGlobal.getText();
+
+            Mensagem mensagem = new Mensagem(0, 0, txt);
+
+            Requisicao requisicao = new Requisicao(Cliente.SERVICO_MENSAGEM, mensagem.encode());
+
+            try {
+
+                this.cliente.enviar(requisicao);
+
+                this.InputChatGlobal.setText("");
+
+            } catch (IOException ex) {
+                System.out.println("IOException: Falha ao enviar mensagem");
+            }
+
+        }
+
+    }//GEN-LAST:event_InputChatGlobalKeyPressed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtEnviarChatGlobal;
     private javax.swing.JTextArea ChatGlobal;

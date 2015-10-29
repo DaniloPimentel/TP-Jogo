@@ -1,9 +1,13 @@
 package cliente;
 
+import cliente.protocolos.Mensagem;
+import cliente.protocolos.MensagemMalFormadaException;
 import cliente.protocolos.Resposta;
 import cliente.protocolos.RespostaMalFormadaException;
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Recebedor extends Thread{
     
@@ -46,6 +50,10 @@ public class Recebedor extends Thread{
                             System.out.println("(SERVICO_SOLICITAR_SALAS)");
                             this.cliente.getGds().atualizarListaSalas(nova.getCorpo());
                             break;
+                        case Cliente.SERVICO_MENSAGEM:
+                            System.out.println("(SERVICO_MENSAGEM)");
+                            servicoMENSAGEM(nova.getCorpo());
+                            break;
                         case Cliente.SERVICO_NEGADO:
                             System.out.print("(SERVICO_NEGADO - ");
                             switch(Integer.parseInt(nova.getCorpo())) {
@@ -86,6 +94,23 @@ public class Recebedor extends Thread{
             
             this.cliente.setId(-1);
             
+        }
+        
+    }
+    
+    private void servicoMENSAGEM(String corpo) {
+        
+        try {
+            
+            Mensagem nova = new Mensagem(corpo);
+            
+            String apelido = this.cliente.getGdj().getJogadorById(nova.getId1()).getApelido();
+            String mensagem = nova.getMensagem();
+            
+            this.cliente.getJanela().novaMensagemGlobal(apelido, mensagem, (nova.getId2() == 0));
+            
+        } catch (MensagemMalFormadaException ex) {
+            System.out.println("Recebedor: Mensagem mal formada recebida");
         }
         
     }

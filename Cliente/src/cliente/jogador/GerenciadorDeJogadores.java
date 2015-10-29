@@ -34,6 +34,15 @@ public class GerenciadorDeJogadores extends Thread {
         }
 
     }
+    
+    public Jogador getJogadorById(int id){
+        for(Jogador c : jogadores){
+            if(c.getId() == id){
+                return c;
+            }
+        }
+        return null;
+    }
 
     public void requisitarJogadores() throws IOException {
 
